@@ -34,6 +34,7 @@ export default function CreateWord() {
 
     return (
         <form onSubmit={onSubmit}>
+            (POST(생성), useNavigate())
             <div className="input_area">
                 <label>Eng</label>
                 <input type="text" placeholder="computer" ref={engRef}/>
