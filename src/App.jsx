@@ -2,32 +2,35 @@ import { useState, useRef } from 'react';
 
 export default function CatFriends() {
   const [index, setIndex] = useState(0);
-  const ulRef = useRef(null);
+  const catRefs = useRef([]);
+
+  const handleNext = () => {
+    const nextIndex = (index + 1) % catList.length;
+    setIndex(nextIndex);
+
+    const node = catRefs.current[nextIndex];
+    if (node) {
+      node.scrollIntoView({
+        behavior: 'smooth',
+        inline: 'center',
+        block: 'nearest'
+      });
+    }
+  };
+  
   return (
     <>
       <nav>
-        <button onClick={() => {
-          const liElements = ulRef.current.children;
-          if (index < catList.length - 1) {
-            setIndex(index + 1);
-          } else {
-            setIndex(0);
-          }
-          const targetLi = liElements[index];
-          targetLi.scrollIntoView({
-            behavior: 'smooth',
-            block: 'nearest',
-            inline: 'center'
-          });
-        }}>
+         <button onClick={handleNext}>
           Next
         </button>
       </nav>
       <div>
-        <ul ref={ulRef}>
+        <ul>
           {catList.map((cat, i) => (
             <li key={cat.id}>
               <img
+                ref={(el) => catRefs.current[i] = el}
                 className={
                   index === i ?
                     'active' :
@@ -51,3 +54,4 @@ for (let i = 0; i < 10; i++) {
     imageUrl: 'https://loremflickr.com/250/200/cat?lock=' + i
   });
 }
+
