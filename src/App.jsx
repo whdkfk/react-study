@@ -1,57 +1,17 @@
-import { useState, useRef } from 'react';
+import React, { useState, useEffect, useRef } from "react";
+import { Route, Routes, BrowserRouter } from "react-router-dom";
+import Header from "./components/header/Header";
+import NewPage from "./components/newPage/NewPage";
+import * as S from './style';
 
-export default function CatFriends() {
-  const [index, setIndex] = useState(0);
-  const catRefs = useRef([]);
+export default function App(){
 
-  const handleNext = () => {
-    const nextIndex = (index + 1) % catList.length;
-    setIndex(nextIndex);
-
-    const node = catRefs.current[nextIndex];
-    if (node) {
-      node.scrollIntoView({
-        behavior: 'smooth',
-        inline: 'center',
-        block: 'nearest'
-      });
-    }
-  };
-  
   return (
-    <>
-      <nav>
-         <button onClick={handleNext}>
-          Next
-        </button>
-      </nav>
-      <div>
-        <ul>
-          {catList.map((cat, i) => (
-            <li key={cat.id}>
-              <img
-                ref={(el) => catRefs.current[i] = el}
-                className={
-                  index === i ?
-                    'active' :
-                    ''
-                }
-                src={cat.imageUrl}
-                alt={'Cat #' + cat.id}
-              />
-            </li>
-          ))}
-        </ul>
-      </div>
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Header />}></Route>
+        <Route path="/new" element={<NewPage />}></Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
-
-const catList = [];
-for (let i = 0; i < 10; i++) {
-  catList.push({
-    id: i,
-    imageUrl: 'https://loremflickr.com/250/200/cat?lock=' + i
-  });
-}
-
